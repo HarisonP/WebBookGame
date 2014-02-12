@@ -1,0 +1,22 @@
+.text-center
+  %h1 Welcome to The first Book Web Game!
+
+
+  %form.spacer{ method: "post", role: "form" }
+    .row
+      .form-group
+        %label{ for: "username" } Username:
+        .col-xs-3.centered
+          %input.form-control{ id: "username", type: "text", name: "username" }
+    .row
+      .form-group
+        %label Password:
+        .col-xs-3.centered
+          %input.form-control{ type: "password", name: "password" }
+    .row
+      %button.btn.btn-success{ type: "submit" } Login
+
+  %p.spacer
+    Still don't have an account?
+    %a{ href: "/register" } Register
+    now!

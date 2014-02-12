@@ -1,0 +1,31 @@
+.text-center
+  %h1 Register
+
+  -if show_error_message
+    .alert.alert-error
+      = show_error_message
+  
+
+  %form.spacer{ :method => "post", :role => "form" }
+    .row
+      .form-group
+        %label{ :for => "username" } Username:
+        .col-xs-3.centered
+          %input.form-control{ :id => "username", :type => "text", :name => "username" }
+    .row
+      .form-group
+        %label Password:
+        .col-xs-3.centered
+          %input.form-control{ :type => "password", :name => "password" }
+    .row
+      .form-group
+        %label Repeat password:
+        .col-xs-3.centered
+          %input.form-control{ :type => "password", :name => "repeated_password" }
+    .row
+      .form-group
+        %label Email:
+        .col-xs-3.centered
+          %input.form-control{ type: "email", name: "email" }
+    .row
+      %button.btn.btn-success{ :type => "submit" } Submit
