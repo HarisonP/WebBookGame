@@ -1,6 +1,6 @@
 class MyGameBase < Sinatra::Base
   get '/register' do
-    haml :register, {locals:{show_error_message:"fua"}}
+    haml :register
   end
 
   post '/register' do
@@ -10,15 +10,26 @@ class MyGameBase < Sinatra::Base
                   repeated_password:params[:repeated_password],
                   email:params[:email],
                   }
-    Models.register escaped_params
-    haml :login
+    if Models::Authentication.register escaped_params
+      haml :login
+    else
+      haml :register, {locals:{error_message:"Incorect Data"}}
+    end
+
   end
 
 
   get '/login' do
     haml :login
   end
-
+  post '/login' do
+    if Models::Authentication.login username: params[:username], password: params[:password]
+      "Succsess" 
+    else
+      haml :login, {locals:{error_message:"Wrong password or username."}}
+    end
+  end
+  
   get '/logout' do
   end
 

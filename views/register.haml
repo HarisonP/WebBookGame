@@ -1,9 +1,9 @@
 .text-center
   %h1 Register
 
-  -if show_error_message
+  -if defined? (error_message) and error_message
     .alert.alert-error
-      = show_error_message
+      = error_message
   
 
   %form.spacer{ :method => "post", :role => "form" }
@@ -11,21 +11,21 @@
       .form-group
         %label{ :for => "username" } Username:
         .col-xs-3.centered
-          %input.form-control{ :id => "username", :type => "text", :name => "username" }
+          %input.form-control{ :id => "username", :type => "text", :name => "username", :required =>true}
     .row
       .form-group
         %label Password:
         .col-xs-3.centered
-          %input.form-control{ :type => "password", :name => "password" }
+          %input.form-control{ :type => "password", :name => "password", :required =>true}
     .row
       .form-group
         %label Repeat password:
         .col-xs-3.centered
-          %input.form-control{ :type => "password", :name => "repeated_password" }
+          %input.form-control{ :type => "password", :name => "repeated_password", :required =>true }
     .row
       .form-group
         %label Email:
         .col-xs-3.centered
-          %input.form-control{ type: "email", name: "email" }
+          %input.form-control{ type: "email", name: "email", :required =>true }
     .row
       %button.btn.btn-success{ :type => "submit" } Submit
