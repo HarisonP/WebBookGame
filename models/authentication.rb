@@ -30,7 +30,7 @@ class Models
 	  		return false if !user
 
 	    	password_hash = Digest::MD5.hexdigest(password + user['salt'])
-	    	password_hash == user['password']
+	    	if password_hash == user['password'] then user["_id"] else false end
     	end
 
     end

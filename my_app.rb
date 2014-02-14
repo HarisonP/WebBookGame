@@ -4,11 +4,14 @@ require 'mongo'
 require 'digest/md5'
 require 'securerandom'
 
+  
 
 class MyGameBase < Sinatra::Base
  # include Models
+ enable :sessions
+ p __FILE__
+ set :root, File.dirname(__FILE__)
  set :views, File.expand_path('../views', __FILE__);
-
   before do
 
   end
@@ -30,8 +33,8 @@ class Models
 end
 
 PATHS = {
-  # '/login, /logout, /register'           => 'AuthenticationController',
-  # '/user'       => MyGame::AuthenticationController,
+  # '/login, /logout, /register'           => 'authentication',
+  # '/heroes-navigation"'       => hero_navigation,
   # '/categories' => MyGame::AuthenticationController,
   # '/expenses'   => MyGame::AuthenticationController,
   # '/report'     => MyGame::AuthenticationController

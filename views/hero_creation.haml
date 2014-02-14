@@ -1,0 +1,24 @@
+.container
+	%div{id:"sex"}
+		%h1.text-center Choose your hero's sex:
+		.row
+			.col-xs-3.centered
+				%h1{style:"float:left"} Female 
+				%h1{style:"float:right"} Male
+				%img{id:"male_hero", src: '/images/femaleHero.jpg', width: '350px', style:'float:left;cursor:pointer'}
+			.span3
+			.col-xs-3.centered
+				
+				%img{id:"Female_hero", src: '/images/maleHero.png', width: '300px', style:'float:right;cursor:pointer'}
+	%div{id:"rasse"}
+		%h1.text-center Choose your hero's rasse:
+		.row
+			.col-xs-3.centered
+				%img{id:"human_rasse", src: '/images/Human.png', width: '250px', style:'float:left;cursor:pointer'}	
+			.span1
+			.col-xs-3.centered
+				%img{id:"elf_rasse", src: '/images/Elf.jpg', width: '250px', style:'float:left;cursor:pointer'}
+			.span1	
+			.col-xs-3.centered
+
+			%img{id:"orc_rasse", src: '/images/Orc.jpg', width: '250px', style:'float:left;cursor:pointer'}

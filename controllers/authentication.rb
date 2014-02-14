@@ -22,9 +22,14 @@ class MyGameBase < Sinatra::Base
   get '/login' do
     haml :login
   end
+
   post '/login' do
-    if Models::Authentication.login username: params[:username], password: params[:password]
-      "Succsess" 
+    id = Models::Authentication.login username: params[:username], password: params[:password]
+    p id
+    if id 
+      session['isLogged'] = true
+      session['userId'] = id
+      redirect "/heroes-navigation"
     else
       haml :login, {locals:{error_message:"Wrong password or username."}}
     end
@@ -33,7 +38,4 @@ class MyGameBase < Sinatra::Base
   get '/logout' do
   end
 
-  # helpers AuthenticationHelpers, WebsiteHelpers
-  # helpers DataBaseHelpers::UserHelpers
-  # helpers ViewHelpers
 end
