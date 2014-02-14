@@ -1,24 +1,54 @@
-.container
-	%div{id:"sex"}
-		%h1.text-center Choose your hero's sex:
-		.row
-			.col-xs-3.centered
-				%h1{style:"float:left"} Female 
-				%h1{style:"float:right"} Male
-				%img{id:"male_hero", src: '/images/femaleHero.jpg', width: '350px', style:'float:left;cursor:pointer'}
-			.span3
-			.col-xs-3.centered
-				
-				%img{id:"Female_hero", src: '/images/maleHero.png', width: '300px', style:'float:right;cursor:pointer'}
-	%div{id:"rasse"}
-		%h1.text-center Choose your hero's rasse:
-		.row
-			.col-xs-3.centered
-				%img{id:"human_rasse", src: '/images/Human.png', width: '250px', style:'float:left;cursor:pointer'}	
-			.span1
-			.col-xs-3.centered
-				%img{id:"elf_rasse", src: '/images/Elf.jpg', width: '250px', style:'float:left;cursor:pointer'}
-			.span1	
-			.col-xs-3.centered
+%script(src="/js/hero_creation.js")
+.container{style:"margin-top:50px"}
+	%form.spacer{id:'hero_creator',method:"POST",action:"/create-hero" }
+		%div{id:"sex"}
+			%h1.text-center Choose your hero's sex:
+			.row
+				.col-xs-3.centered
+					%h1{style:"float:left"} Female 
+					%h1{style:"float:right"} Male
+					%img{id:"female_hero", class:'sex', src: '/images/hero_creating/femaleHero.jpg', width: '350px', style:'float:left;cursor:pointer'}
+				.span3
+					%input{type:"text", id:"sex_field", name:'sex', style:'display:none'}
+				.col-xs-3.centered
+					
+					%img{id:"male_hero", class:'sex', src: '/images/hero_creating/maleHero.png', width: '300px', style:'float:right;cursor:pointer'}
+		%div{id:"rasse" ,style:'display:none'}
+			%a.btn.btn-lagre.btn-success Back
+			%h1.text-center Choose your hero's rasse:
+			.row
+				.col-xs-3.centered
+					%img{id:"human_rasse", class:'rasse', src: '/images/hero_creating/Human.png', width: '250px', style:'float:left;cursor:pointer'}	
+				.span1
+					%input{type:"text", id:"rasse_field", name:'rasse', style:'display:none'}
+				.col-xs-3.centered
+					%img{id:"elf_rasse", class:'rasse', src: '/images/hero_creating/Elf.jpg', width: '250px', style:'float:left;cursor:pointer'}
+				.span1	
+				.col-xs-3.centered
+				%img{id:"orc_rasse", class:'rasse', src: '/images/hero_creating/Orc.jpg', width: '250px', style:'float:left;cursor:pointer'}
 
-			%img{id:"orc_rasse", src: '/images/Orc.jpg', width: '250px', style:'float:left;cursor:pointer'}
+		%div{id:"class" ,style:'display:none'}
+			%a.btn.btn-lagre.btn-success Back
+			%h1.text-center Choose your hero's class:
+			.row
+				%input{type:"text", id:"class_field", name:'class', style:'display:none'}
+				.col-xs-3.centered.span3
+					
+					%img{id:"warrior_class", class:'class', src: '/images/hero_creating/Warrior.jpg', width: '250px', style:'float:left;cursor:pointer;height: 300px'}
+					%h1 Warrior
+				.col-xs-3.centered.span3
+					%img{id:"hinter_class", class:'class', src: '/images/hero_creating/Hinter.jpg', width: '250px', style:'float:left;cursor:pointer;height:300px'}
+						%h1 Hinter
+				.col-xs-3.centered.span3
+					%img{id:"rouge_class", class:'class', src: '/images/hero_creating/Rouge.jpg', width: '250px', style:'float:left;cursor:pointer;height: 300px'}
+					%h1 Rouge
+				.col-xs-3.centered.span3
+					%img{id:"methodage_class", class:'class', src: '/images/hero_creating/Mage.jpg', width: '250px', style:'float:left;cursor:pointer;height: 300px'}
+					%h1 Mage
+		%div{id:"hero_name" ,style:'display:none'}
+			%a.btn.btn-lagre.btn-success Back
+			%h1.text-center Choose your hero's name:
+			.row.text-center
+				%input{type:"text", id:"name_field", name:'hero_name'}
+				.row.text-center
+					%button{type:"submit", class:'btn btn-lagre btn-success'} Create Hero
