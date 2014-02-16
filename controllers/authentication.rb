@@ -28,7 +28,7 @@ class MyGameBase < Sinatra::Base
     p id
     if id 
       session['isLogged'] = true
-      session['userId'] = id
+      session['user_id'] = id
       redirect "/heroes-navigation"
     else
       haml :login, {locals:{error_message:"Wrong password or username."}}

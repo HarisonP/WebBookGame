@@ -8,14 +8,14 @@ $(document).ready(function() {
 
 	$('.rasse').click(function () {
 		var rasse = $(this).attr('id').split('_')[0];
-		$('#rasse_field').val(sex);
+		$('#rasse_field').val(rasse);
 		$('#rasse').hide();
 		$('#class').show();
 	});
 
 	$('.class').click(function () {
 		var Class = $(this).attr('id').split('_')[0];
-		$('#class_field').val(sex);
+		$('#class_field').val(Class);
 		$('#class').hide();
 		$('#hero_name').show();
 	});

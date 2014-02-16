@@ -7,9 +7,8 @@ require 'securerandom'
   
 
 class MyGameBase < Sinatra::Base
- # include Models
+ 
  enable :sessions
- p __FILE__
  set :root, File.dirname(__FILE__)
  set :views, File.expand_path('../views', __FILE__);
   before do
