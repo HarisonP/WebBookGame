@@ -8,9 +8,12 @@ class MyGameBase < Sinatra::Base
     haml :hero_creation
   end
   post '/hero-creaton' do
-    created_hero = Hero.new(false,params['sex'], params['rasse'], params['class'], params['hero_name'],session['user_id'])
-    p params['rasse']
-    haml :login
+    created_hero = nil
+    case params['class']
+      when 'warrior'
+        created_hero = Warrior.new(false,params['sex'], params['rasse'], params['class'], params['hero_name'],session['user_id'])
+    end
+      created_hero.save_hero
+      haml :login
   end
-  #helpers ViewHelpers
 end

@@ -3,11 +3,12 @@ require 'sinatra/base'
 require 'mongo'
 require 'digest/md5'
 require 'securerandom'
-
+require 'haml'
+require 'json'
   
 
 class MyGameBase < Sinatra::Base
- 
+
  enable :sessions
  set :root, File.dirname(__FILE__)
  set :views, File.expand_path('../views', __FILE__);

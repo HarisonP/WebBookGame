@@ -1,7 +1,7 @@
 class Hero 
   attr_accessor :properties
 
-  def initialize(hero_exists, sex, rasse, classe, name, userId)
+  def initialize(hero_exists, sex, rasse, classe, name, user_id)
     @properties = {}
     if hero_exists
     else
@@ -15,8 +15,8 @@ class Hero
       @properties['armour'] = 0
       @properties['level'] = 1
       @properties['expirience'] = 0
-      @properties['unused_skill_points'] = 0
-      @properties['unused_skiil_update_points'] = 0
+      @properties['unused_skill_points'] = 10
+      @properties['unused_magic_points'] = 1
 
       @properties['max_mana']
       @properties['max_energy']
@@ -27,7 +27,8 @@ class Hero
       @properties['rasse'] = rasse
       @properties['class'] = classe
       @properties['name'] = name  
-      @properties['userId'] = userId
+      @properties['user_id'] = user_id
+      @properties['current_health'] = @properties['max_health']
     end
 
     if rasse == 'human'
@@ -49,25 +50,28 @@ class Hero
   def levelup
     @properties['max_health'] += 10
     @properties['unused_skill_points'] += 10
-    @properties['unused_skiil_update_points'] += 1
-    @properties['level'] += 1
+    @properties['unused_magic_points'] += 1
     @properties['expirience'] -= 50* (2**@properties['level'])
+    @properties['level'] += 1
+    
 
-    if rasse == 'human'
+    if @properties['rasse'] == 'human'
       @properties['unused_skill_points'] += 1
       @properties['intelligence'] += 3
       @properties['strength'] += 1
       @properties['max_health'] += 15
-    elsif rasse == 'elf'
+    elsif @properties['rasse'] == 'elf'
       @properties['dexterity'] += 4
       @properties['intelligence'] += 1
       @properties['harizma'] += 1
       @properties['speed'] += 1
-    elsif rasse == 'orc'
+    elsif @properties['rasse'] == 'orc'
       @properties['strength'] += 5
       @properties['max_health'] += 25
     end
-    @properties['current_health'] = @properties['max_health']
+  end
+  def save_hero
+    Models::Heroes.save_hero hero:self
   end
 
 end
