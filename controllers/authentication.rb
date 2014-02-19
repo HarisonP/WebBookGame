@@ -5,13 +5,13 @@ class MyGameBase < Sinatra::Base
 
   post '/register' do
     # no escaping:
-    escaped_params = {username:params[:username], 
+    escaped_params = {db:settings.db, username:params[:username], 
                   password:params[:password],
                   repeated_password:params[:repeated_password],
                   email:params[:email],
                   }
     if Models::Authentication.register escaped_params
-      haml :login
+      redirect '/heroes-navigation'
     else
       haml :register, {locals:{error_message:"Incorect Data"}}
     end
@@ -24,10 +24,9 @@ class MyGameBase < Sinatra::Base
   end
 
   post '/login' do
-    id = Models::Authentication.login username: params[:username], password: params[:password]
-    p id
+    id = Models::Authentication.login db: settings.db, username: params[:username], password: params[:password]
     if id 
-      session['isLogged'] = true
+      session['is_logged'] = true
       session['user_id'] = id
       redirect "/heroes-navigation"
     else

@@ -3,10 +3,12 @@
     %meta(charset="utf-8")
     / %title= @title
     %link(href="/css/bootstrap.min.css" rel="stylesheet" media="screen")
+    %link(href="/css/style.css" rel="stylesheet" media="screen")
   %body
     %script(src="/js/jquery-2.1.0.min.js")
     / = user_logged? ? (haml :logged_navigation_bar) : (haml :not_logged_navigation_bar)
-
+    %aside
+      WTF
     = yield
 
     %script(src="/js/bootstrap.min.js")

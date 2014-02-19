@@ -70,8 +70,9 @@ class Hero
       @properties['max_health'] += 25
     end
   end
-  def save_hero
-    Models::Heroes.save_hero hero:self
+  def save_hero db:, collection:"heroes"
+    @properties['image'] = @properties["rasse"].capitalize + @properties["sex"].capitalize + @properties["class"].capitalize + ".jpg"
+    Models::Heroes.save_hero db:db, hero:self, collection:collection
   end
 
 end

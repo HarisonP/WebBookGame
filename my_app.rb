@@ -13,9 +13,12 @@ class MyGameBase < Sinatra::Base
  set :root, File.dirname(__FILE__)
  set :views, File.expand_path('../views', __FILE__);
   before do
-
+    requested_url = request.path_info
+    if !session['is_logged'] and requested_url != '/login' and requested_url != '/register'
+      redirect redirect '/login', 303
+    end
   end
-  
+
   get '/' do
     redirect '/login', 303
   end
@@ -32,6 +35,9 @@ class Models
   end
 end
 
+class MyGameBase < Sinatra::Base
+  set :db, Models.connect_to_db
+end
 PATHS = {
   # '/login, /logout, /register'           => 'authentication',
   # '/heroes-navigation"'       => hero_navigation,

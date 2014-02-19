@@ -3,12 +3,11 @@ class Models
   class Authentication
 	  class <<self
 	  	def usernameExists(db:,username:)
-	  		users =db['users'];
+	  		users = db['users'];
 	  		users.find({username: username}).count != 0
 	  	end
 
-	    def register(username:, password:, repeated_password:, email:)
-				db = Models.connect_to_db
+	    def register(db:,username:, password:, repeated_password:, email:)
 				return false if usernameExists(db:db, username:username) or password != repeated_password
 
 				salt = SecureRandom.hex(3)
@@ -23,8 +22,7 @@ class Models
 				users.insert(new_user);
 	  	end
 
-	  	def login(username:, password:)
-	    	db = Models.connect_to_db
+	  	def login(db:, username:, password:)
 	    	users = db['users']
 	    	user = users.find_one({username:username})
 	  		return false if !user

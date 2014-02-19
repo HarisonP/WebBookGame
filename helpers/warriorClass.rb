@@ -31,6 +31,7 @@ class Warrior < Hero
     @properties['dexterity'] += 2
     @properties['intelligence'] += 1
     @properties['max_health'] += 150
+    @properties['current_health'] = @properties['max_health']
     @properties['max_rage'] = 100
     @properties['current_rage'] = 0
     @properties['armour'] += 5
@@ -106,9 +107,9 @@ class Warrior < Hero
   end
 
   def second_spell
-    # if @properties['current_rage'] >= @properties['level'] * 10
+    if @properties['current_rage'] >= @properties['level'] * 10
       heavy_hit
-    # end
+    end
   end
 
   def third_spell
@@ -116,13 +117,11 @@ class Warrior < Hero
   end
 
   def ultimate 
-    # if @properties['current_rage'] >= @properties['level'] * 20 $$ @properties['level'] > 2
+    if @properties['current_rage'] >= @properties['level'] * 20 and @properties['level'] > 2
       execute
-    # end
+    end
   end
-  def saveHero
-    Models::Heroes.saveHero(self)
-  end
+
 
   private
 
@@ -175,25 +174,3 @@ class Warrior < Hero
 end
 
 
-# @properties['strength'] = 0
-#       @properties['speed'] = 0
-#       @properties['dexterity'] = 0
-#       @properties['intelligence']= 0
-#       @properties['harizma'] = 0
-
-#       @properties['healt'] = 100
-#       @properties['armour'] = 0
-#       @properties['level'] = 1
-#       @properties['expirience'] = 0
-#       @properties['unused_skill_points'] = 0
-#       @properties['unused_skiil_update_points'] = 0
-#       @properties['mana']
-#       @properties['energy']
-#       @properties['focus']
-#       @properties['rage']
-
-#       @properties['sex'] = sex
-#       @properties['rasse'] = rasse
-#       @properties['class'] = classe
-#       @properties['name'] = name  
-#       @properties['userId'] = userId

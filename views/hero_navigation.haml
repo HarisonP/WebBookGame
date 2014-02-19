@@ -1,5 +1,22 @@
+%script(src="/js/hero_navigation.js")
 .text-center
   %h1 Hero Navigation
 .text-center.row
   %form.spacer{type:"GET", action:"/hero-creaton"}
     %button.btn-large.btn-success{ id:"hero_creator", tupe:"submit" } New Hero
+.container.text-center{style:'height:500px;overflow:auto'}
+  - k = 0 
+  - user_heroes.each do |hero|
+    .row.text-center.hero_container{id:"#{hero['_id']}", style:'margin-top:50px'}
+      .col-xs-3.centered.span2
+        %img{class:'', src: "/images/heroes_images/#{hero['properties']['image']}", width: '100px', style:'float:left;height:100px'}
+        %h1{style:"float:left;color:#51a351"}
+          =hero['name']
+      .col-xs-3.centered.span4
+        %h1{style:"float:left;color:#51a351;margin-top:20px"}
+          Class: #{hero['properties']['class']}
+          Rasse: #{hero['properties']['rasse']}
+      .col-xs-3.centered.span3
+        %button.bnt.btn-lagre.btn-success{style:"margin-top:20px;width:200px"} Choose this Hero
+        %button.bnt.btn-lagre.btn-success{style:"margin-top:20px;width:200px"} Edit this Hero
+        %button.bnt.btn-lagre.btn-warning{class:"deleter", style:"margin-top:20px;width:200px"} Delete this Hero
