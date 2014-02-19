@@ -1,20 +1,29 @@
 class Warrior < Hero
   attr_accessor :defencive_improvements
   attr_accessor :offensive_improvements
-  def initialize(hero_exists, sex, rasse, classe, name, userId)
-    super 
+  def initialize(hero_exists, sex:"male", rasse:"orc", classe:"warrior", name:"dummy", user_id:"")
+    super hero_exists, sex, rasse, classe, name, user_id
     @defencive_improvements = {}
     @defencive_improvements['rage_update'] = 1
-    # not impelementet
     @defencive_improvements['rage_by_taking_damage'] = 0
-    # ---
     @defencive_improvements['health_per_turn'] = 0
     @defencive_improvements['block_update'] = 0
     @defencive_improvements['armour_update'] = 0
-    # not impelementet
     @defencive_improvements['block_damage_return'] = 0
-    # ---
     @defencive_improvements['defence_mode_damage'] = 0
+
+    
+    @defencive_improvements['points'] = {}
+    @defencive_improvements['points']['rage_update'] = 0
+    @defencive_improvements['points']['rage_by_taking_damage'] = 0
+    @defencive_improvements['points']['health_per_turn'] = 0
+    @defencive_improvements['points']['block_update'] = 0
+    @defencive_improvements['points']['armour_update'] = 0
+    @defencive_improvements['points']['block_damage_return'] = 0
+    @defencive_improvements['points']['defence_mode_damage'] = 0
+
+
+
 
     @offensive_improvements = {}
     @offensive_improvements['execute_critical_chance'] = 5
@@ -24,6 +33,15 @@ class Warrior < Hero
     @offensive_improvements['heavy_hit_damage'] = 1
     @offensive_improvements['defence_mode_damage'] = 0
     @offensive_improvements['defence_mode_health'] = 0
+
+    @offensive_improvements['points'] = {}
+    @offensive_improvements['points']['execute_critical_chance'] = 0
+    @offensive_improvements['points']['fast_hit_damage'] = 0
+    @offensive_improvements['points']['fast_hit_rage'] = 0
+    @offensive_improvements['points']['heavy_hit_rage'] = 0
+    @offensive_improvements['points']['heavy_hit_damage'] = 0
+    @offensive_improvements['points']['defence_mode_damage'] = 0
+    @offensive_improvements['points']['defence_mode_health'] = 0
 
     
     @properties['strength'] += 5
@@ -44,55 +62,74 @@ class Warrior < Hero
       case improvement_name 
         when 'execute_critical_chance'
           @offensive_improvements['execute_critical_chance'] += 2 * how_many
+          @offensive_improvements['points']['execute_critical_chance'] += how_many
         when 'fast_hit_damage'
           @offensive_improvements['fast_hit_damage'] += 0.2 * how_many
+          @offensive_improvements['points']['fast_hit_damage'] += how_many
         when 'fast_hit_rage'
           @offensive_improvements['fast_hit_rage'] += 0.1 * how_many
+          @offensive_improvements['points']['fast_hit_rage'] += how_many
         when 'heavy_hit_rage'
             @offensive_improvements['heavy_hit_rage'] += 0.2 * how_many
+            @offensive_improvements['points']['heavy_hit_rage'] += how_many
         when 'heavy_hit_damage'
           @offensive_improvements['heavy_hit_damage'] += 0.1 * how_many
+          @offensive_improvements['points']['heavy_hit_damage'] += how_many
         when 'defence_mode_damage'
           if @offensive_improvements['defence_mode_damage'] == 0
-            @offensive_improvements['defence_mode_damage'] = 0.5
+            @offensive_improvements['points']['defence_mode_damage'] = 0.5
             how_many -= 1
+            @offensive_improvements['points']['defence_mode_damage'] += 1
           end
           @offensive_improvements['defence_mode_damage'] += 0.1 * how_many
+          @offensive_improvements['points']['defence_mode_damage'] += how_many
         when 'defence_mode_health'
-          @offensive_improvements['defence_mode_health'] += 0.1 * how_many
+          @offensive_improvements['points']['defence_mode_health'] += 0.1 * how_many
+          @offensive_improvements['points']['defence_mode_health'] += how_many
       end
     else
       case improvement_name 
         when 'rage_update'
           @defencive_improvements['rage_update'] += 1 * how_many
+          @defencive_improvements['points']['rage_update'] += how_many
         when 'rage_by_taking_damage'
           if @defencive_improvements['rage_by_taking_damage'] == 0
             @defencive_improvements['rage_by_taking_damage'] == 0.5
             how_many -= 1
+            @defencive_improvements['points']['rage_by_taking_damage'] += 1
            end
           @defencive_improvements['rage_by_taking_damage'] += 0.1 * how_many
+          @defencive_improvements['points']['rage_by_taking_damage'] += how_many
         when 'health_per_turn'
           if @defencive_improvements['health_per_turn']
             @defencive_improvements['health_per_turn'] += 0.05
             how_many -=1
+            @defencive_improvements['points']['health_per_turn'] += 1
           end
           @defencive_improvements['health_per_turn'] += 0.01 * how_many
+          @defencive_improvements['points']['health_per_turn'] += how_many
         when 'block_update'
             @defencive_improvements['block_update'] += 1 * how_many
+            @defencive_improvements['points']['block_update'] += how_many
         when 'armour_update'
           @defencive_improvements['armour_update'] += 1 * how_many
+          @defencive_improvements['points']['armour_update'] += how_many
         when 'block_damage_return'
           if @defencive_improvements['block_damage_return'] == 0
             @defencive_improvements['block_damage_return'] = 0.5
             how_many -= 1
+            @defencive_improvements['points']['block_damage_return'] += 1
           end
           @defencive_improvements['block_damage_return'] += 0.1 * how_many
+          @defencive_improvements['points']['block_damage_return'] += how_many
         when 'defence_mode_damage'
             if @defencive_improvements['defence_mode_damage'] == 0
             @defencive_improvements['defence_mode_damage'] = 0.5
             how_many -= 1
+            @defencive_improvements['points']['defence_mode_damage'] += 1
           end
           @defencive_improvements['defence_mode_damage'] += 0.1 * how_many
+          @defencive_improvements['points']['defence_mode_damage'] += how_many
       end
     end
   end
@@ -101,7 +138,41 @@ class Warrior < Hero
     @properties['strength'] += 1
     @properties['armour'] += 5
   end
+  
+  def take_damage(damage:, blocked_positions:[], position:, info:{})
+    info['position'] = position
+    info['blocked'] = false
+    info['damage_taken'] = damage
+    info['health_restored'] = 0
+    info['rage_restored'] = 0
+    info['damage_returned'] = 0
+    case position
+      when "head"
+        damage = damage * 1.1
+      when 'body'
+        damage = damage * 1
+      when 'legs' || 'arms'
+        damage = damage * 0.9
+    end
 
+    if blocked_positions.include?(position);
+      info['damage_returned'] += (@defencive_improvements['block_damage_return'] * fast_hit).floor
+      damage -= block
+      info['blocked'] = true
+    else
+      damage -= taken
+    end
+      damage = 0 if damage < 0
+      damage = damage.floor
+      @properties['current_health'] -= damage
+      generate_rage(damage,info:info);
+      info["damage_taken"] = damage
+      @properties['current_rage'] += (damage * @defencive_improvements["rage_by_taking_damage"]).floor
+      info['rage_restored'] += (damage * @defencive_improvements["rage_by_taking_damage"]).floor
+      @properties['current_health'] > 0
+  end
+
+  
   def first_spell
     fast_hit
   end
@@ -139,10 +210,13 @@ class Warrior < Hero
     50 * @properties['level'] + 5 * @properties['armour'] + @defencive_improvements['block_update'] * @properties['armour']
   end
 
-  def generateRage(damage_taken)
-    @properties['current_health'] += @properties['armour'] * defencive_improvements['health_per_turn']
-    @properties['current_rage'] += @properties['level'] * @defencive_improvements['rage_update']
-    @properties['current_rage'] += damage_taken / 10
+  def generate_rage(damage_taken, info:{})
+    @properties['current_health'] += (@properties['armour'] * defencive_improvements['health_per_turn']).floor
+    info['health_restored'] += (@properties['armour'] * defencive_improvements['health_per_turn']).floor
+    @properties['current_rage'] += (@properties['level'] * @defencive_improvements['rage_update']).floor
+    info['rage_restored'] +=  (@properties['level'] * @defencive_improvements['rage_update']).floor
+    @properties['current_rage'] += (damage_taken / 10).floor
+    info['rage_restored'] += (damage_taken / 10).floor
   end
 
   def fast_hit

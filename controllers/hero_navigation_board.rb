@@ -11,11 +11,16 @@ class MyGameBase < Sinatra::Base
     created_hero = nil
     p params['class']
     # p Mage.new
+     hero_info = {sex:params['sex'],
+                  rasse:params['rasse'],
+                  classe:params['class'], 
+                  name:params['hero_name'], 
+                  user_id:session['user_id']}
     case params['class']
       when 'warrior'
-        created_hero = Warrior.new(false,params['sex'], params['rasse'], params['class'], params['hero_name'],session['user_id'])
+        created_hero = Warrior.new(false, hero_info)
       when 'mage'
-        created_hero = Mage.new(false,params['sex'], params['rasse'], params['class'], params['hero_name'],session['user_id'])
+        created_hero = Mage.new(false, hero_info)
     end
       p created_hero
       created_hero.save_hero db:settings.db
