@@ -6,7 +6,14 @@ class Models
         heroes = db['heroes'].find({user_id: user_id})
         heroes.to_a
       end
+      
+      def find_hero(db:, user_id:, hero_id:)
+        db['heroes'].find_one({_id:hero_id, user_id:user_id})
+      end
 
+      def update_hero(db:, user_id:, hero_id:, update_obj:)
+        db[collection].update({_id:hero_id,  user_id:user_id},update_obj)
+      end
       def save_hero(db:, hero:, collection:)
         hero_for_saving = {user_id:hero.properties['user_id'],name: hero.properties['name'], properties: hero.properties, 
                           defencive_improvements: hero.defencive_improvements,

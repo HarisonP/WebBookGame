@@ -4,7 +4,7 @@ $(document).ready(function (){
 		var self  = this
 		var heroForDeletion = $(this).parents('.hero_container')
 		$.ajax({
-			type: "POST",
+			type: "DELETE",
 			url: "/delete-hero",
 			data: {hero_for_deletion: heroForDeletion.attr('id')},
 			success: function(response){
@@ -14,6 +14,9 @@ $(document).ready(function (){
 		})
 	});
 
-
-
+	$('.chooser').click(function () {
+		var self  = this
+		var chosenHeroId = $(this).parents('.hero_container').attr('id')
+		window.location.href = '/hero-chosen/' + chosenHeroId
+	});
 });

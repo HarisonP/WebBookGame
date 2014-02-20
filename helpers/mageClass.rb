@@ -55,6 +55,7 @@ class Mage < Hero
     @properties['dexterity'] += 2
     @properties['intelligence'] += 6
     @properties['max_health'] += 100
+    @properties['current_health'] = @properties['max_health']
     @properties['max_mana'] = 150
     @properties['current_mana'] = 150
     @properties['armour'] += 0
