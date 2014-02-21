@@ -1,63 +1,62 @@
 class Warrior < Hero
-  attr_accessor :defencive_improvements
-  attr_accessor :offensive_improvements
-  def initialize(hero_exists, sex:"male", rasse:"orc", classe:"warrior", name:"dummy", user_id:"")
-    super hero_exists, sex, rasse, classe, name, user_id
-    @defencive_improvements = {}
-    @defencive_improvements['rage_update'] = 1
-    @defencive_improvements['rage_by_taking_damage'] = 0
-    @defencive_improvements['health_per_turn'] = 0
-    @defencive_improvements['block_update'] = 0
-    @defencive_improvements['armour_update'] = 0
-    @defencive_improvements['block_damage_return'] = 0
-    @defencive_improvements['defence_mode_damage'] = 0
 
-    
-    @defencive_improvements['points'] = {}
-    @defencive_improvements['points']['rage_update'] = 0
-    @defencive_improvements['points']['rage_by_taking_damage'] = 0
-    @defencive_improvements['points']['health_per_turn'] = 0
-    @defencive_improvements['points']['block_update'] = 0
-    @defencive_improvements['points']['armour_update'] = 0
-    @defencive_improvements['points']['block_damage_return'] = 0
-    @defencive_improvements['points']['defence_mode_damage'] = 0
+  def initialize(hero_exists, hero:nil, sex:"male", rasse:"orc", classe:"warrior", name:"dummy", user_id:"")
+    if hero_exists
+      super
+    else
+      super hero_exists, hero:hero, sex:sex, rasse:rasse, classe:classe, name:name, user_id:user_id
+      
+      @defencive_improvements['rage_update'] = 1
+      @defencive_improvements['rage_by_taking_damage'] = 0
+      @defencive_improvements['health_per_turn'] = 0
+      @defencive_improvements['block_update'] = 0
+      @defencive_improvements['armour_update'] = 0
+      @defencive_improvements['block_damage_return'] = 0
+      @defencive_improvements['defence_mode_damage'] = 0
 
+      
+      @defencive_improvements['points']['rage_update'] = 0
+      @defencive_improvements['points']['rage_by_taking_damage'] = 0
+      @defencive_improvements['points']['health_per_turn'] = 0
+      @defencive_improvements['points']['block_update'] = 0
+      @defencive_improvements['points']['armour_update'] = 0
+      @defencive_improvements['points']['block_damage_return'] = 0
+      @defencive_improvements['points']['defence_mode_damage'] = 0
 
+      @offensive_improvements['fast_hit_damage'] = 1
+      @offensive_improvements['fast_hit_rage'] = 0
+      @offensive_improvements['heavy_hit_rage'] = 0
+      @offensive_improvements['heavy_hit_damage'] = 1
+      @offensive_improvements['defence_mode_damage'] = 0
+      @offensive_improvements['defence_mode_health'] = 0
+      @offensive_improvements['execute_critical_chance'] = 5
 
+      
+      @offensive_improvements['points']['fast_hit_damage'] = 0
+      @offensive_improvements['points']['fast_hit_rage'] = 0
+      @offensive_improvements['points']['heavy_hit_rage'] = 0
+      @offensive_improvements['points']['heavy_hit_damage'] = 0
+      @offensive_improvements['points']['defence_mode_damage'] = 0
+      @offensive_improvements['points']['defence_mode_health'] = 0
+      @offensive_improvements['points']['execute_critical_chance'] = 0
 
-    @offensive_improvements = {}
-    @offensive_improvements['execute_critical_chance'] = 5
-    @offensive_improvements['fast_hit_damage'] = 1
-    @offensive_improvements['fast_hit_rage'] = 0
-    @offensive_improvements['heavy_hit_rage'] = 0
-    @offensive_improvements['heavy_hit_damage'] = 1
-    @offensive_improvements['defence_mode_damage'] = 0
-    @offensive_improvements['defence_mode_health'] = 0
-
-    @offensive_improvements['points'] = {}
-    @offensive_improvements['points']['execute_critical_chance'] = 0
-    @offensive_improvements['points']['fast_hit_damage'] = 0
-    @offensive_improvements['points']['fast_hit_rage'] = 0
-    @offensive_improvements['points']['heavy_hit_rage'] = 0
-    @offensive_improvements['points']['heavy_hit_damage'] = 0
-    @offensive_improvements['points']['defence_mode_damage'] = 0
-    @offensive_improvements['points']['defence_mode_health'] = 0
-
-    
-    @properties['strength'] += 5
-    @properties['speed'] += 2
-    @properties['dexterity'] += 2
-    @properties['intelligence'] += 1
-    @properties['max_health'] += 150
-    @properties['current_health'] = @properties['max_health']
-    @properties['max_rage'] = 100
-    @properties['current_rage'] = 0
-    @properties['armour'] += 5
-    @properties['armour'] += @properties['level'] * @defencive_improvements['armour_update']
+      
+      @properties['strength'] += 5
+      @properties['speed'] += 2
+      @properties['dexterity'] += 2
+      @properties['intelligence'] += 1
+      @properties['max_health'] += 150
+      @properties['current_health'] = @properties['max_health']
+      @properties['max_rage'] = 100
+      @properties['current_rage'] = 0
+      @properties['armour'] += 5
+      @properties['armour'] += @properties['level'] * @defencive_improvements['armour_update']
+    end
   end
-  def add_magic_point(improvement_type:, improvement_name:, how_many:1)
+  def add_magic_points(improvement_type:, improvement_name:, how_many:1)
     
-
+    return if how_many == 0
+    
     if improvement_type == 'offensive'
       case improvement_name 
         when 'execute_critical_chance'
@@ -179,8 +178,10 @@ class Warrior < Hero
 
   def second_spell
     if @properties['current_rage'] >= @properties['level'] * 10
-      heavy_hit
+      @properties['current_rage'] -= @properties['level'] * 10
+      return heavy_hit
     end
+    0
   end
 
   def third_spell
@@ -189,10 +190,11 @@ class Warrior < Hero
 
   def ultimate 
     if @properties['current_rage'] >= @properties['level'] * 20 and @properties['level'] > 2
-      execute
+      @properties['current_rage'] = 0
+      return execute
     end
+    0
   end
-
 
   private
 

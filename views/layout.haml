@@ -6,9 +6,7 @@
     %link(href="/css/style.css" rel="stylesheet" media="screen")
   %body
     %script(src="/js/jquery-2.1.0.min.js")
-    / = user_logged? ? (haml :logged_navigation_bar) : (haml :not_logged_navigation_bar)
-    / = @hero_chosen
-    / = @hero
+   
     - if @hero_chosen
       %script(src="/js/town.js")
       :javascript
@@ -57,30 +55,69 @@
               %button{id:'other_hero', class:'bnt btn-success', style:'margin-left'} Another Hero
               %button{id:'edit_hero', class:'bnt btn-success'} Edit Hero
         .row.text-center.editView{style:'display:none'}
-          .alert.alert-success.span3{id:'unused_skill_points', style:'margin-left:30px'}
-            %h4
-              You have #{@hero['properties']['unused_skill_points']} skill points
-          .row
-            .form-group
-              %label{ for: "more_strength" } 
-                Strenght:
-              %input.form-control{ id: "more_strength", min:"#{@hero['properties']['strength']}", value:"#{@hero['properties']['strength']}" , type: "number", name: "strength", style:'width:50px;height:30px'}
-          .row
-            .form-group
-              %label{ for: "more_dexterity" } Dextirity:
-              %input.form-control{ id:"more_dexterity", min:"#{@hero['properties']['dexterity']}", value:"#{@hero['properties']['dexterity']}" , type: "number", name: "dexterity", style:'width:50px;height:30px'}
-          .row
-            .form-group
-              %label{ for: "more_speed" } Speed:
-              %input.form-control{ id:"more_speed", min:"#{@hero['properties']['dexterity']}", value:"#{@hero['properties']['dexterity']}" , type: "number", name: "dexterity", style:'width:50px;height:30px'}
-          .row
-            .form-group
-              %label{ for: "more_intelligence" } Intelligence:
-              %input.form-control{ id:"more_intelligence", min:"#{@hero['properties']['intelligence']}", value:"#{@hero['properties']['intelligence']}" , type: "number", name: "dexterity", style:'width:50px;height:30px'}        
-          .row
-            %button.btn.btn-success{id:"back_to_hero_view", type: "" } Back
-            %button.btn.btn-success{id:"change_saver", type: "" } Save Changes
-
+          %header{style:"margin-left:20px"}
+            %ul{id:'udateNavigator', class:"nav nav-tabs"}
+              %li{:data => {:for => ".statsUpdates"}  ,class:"active"}
+                %a Stats
+              %li{:data => {:for => ".offensive"}}
+                %a Offensive
+              %li{:data => {:for => ".defencive"}}
+                %a Defencive
+          
+          .offensive{style:"display:none"}
+            .alert.alert-success.span3{id:'unused_skill_points', style:'margin-left:30px;'}
+              %h4
+                You have #{@hero['properties']['unused_magic_points']} magic points
+            - @hero['offensive_improvements'].keys.each do |key|
+              -if key != 'points'
+                .form-group
+                  %label{for: "#{key}"}
+                    #{key}
+                  #{@hero['offensive_improvements']['points'][key]} +
+                  %input.span1{type:'number',class:"offensive_input", id:"#{key}", min:0, max:"#{@hero['properties']['unused_magic_points']}" ,value:0, title:"#{key}", style:'height:30px'}
+          .defencive{style:"display:none"}
+            .alert.alert-success.span3{id:'unused_skill_points', style:'margin-left:30px'}
+              %h4
+                You have #{@hero['properties']['unused_magic_points']} magic points
+            - @hero['defencive_improvements'].keys.each do |key|
+              -if key != 'points'
+                .form-group
+                  %label{for: "#{key}"}
+                    #{key}
+                  #{@hero['defencive_improvements']['points'][key]} +
+                  %input.span1{type:'number', class:"defencive_input", id:"#{key}", min:0, title:"#{key}", max:"#{@hero['properties']['unused_magic_points']}", value:0, style:'height:30px'}        
+              / style:"height:50px;background-image:url(../images/hero_creating/edit_magic/#{key}.jpg);background-repeat:no-repeat;"
+          .statsUpdates
+            .alert.alert-success.span3{id:'unused_skill_points', style:'margin-left:30px'}
+              %h4
+                You have #{@hero['properties']['unused_skill_points']} skill points
+            .row
+              .form-group
+                %label{ for: "more_strength" } 
+                  Strenght:
+                #{@hero['properties']['strength']} +
+                %input.form-control{ id: "more_strength", min:0, max:"#{@hero['properties']['unused_skill_points']}", type: "number", value:0, name: "strength", style:'width:50px;height:30px'}
+            .row
+              .form-group
+                %label{ for: "more_dexterity" } 
+                  Dexterity:
+                #{@hero['properties']['dexterity']} +
+                %input.form-control{ id: "more_dexterity", min:0, max:"#{@hero['properties']['unused_skill_points']}", type: "number", value:0, name: "dexterity", style:'width:50px;height:30px'}
+            .row
+              .form-group
+                %label{ for: "more_speed" } 
+                  Speed:
+                #{@hero['properties']['speed']} +
+                %input.form-control{ id: "more_speed", min:0, max:"#{@hero['properties']['unused_skill_points']}", type: "number", value:0, name: "speed", style:'width:50px;height:30px'}
+            .row
+              .form-group
+                %label{ for: "more_intelligence" } 
+                  Intelligence:
+                #{@hero['properties']['intelligence']} +
+                %input.form-control{ id: "more_intelligence", min:0, max:"#{@hero['properties']['unused_skill_points']}", type: "number", value:0, name: "intelligence", style:'width:50px;height:30px'}
+            .row
+          %button.btn.btn-success{id:"back_to_hero_view", type: "" } Back
+          %button.btn.btn-success{id:"change_saver", type: "" } Save Changes
     = yield
 
     %script(src="/js/bootstrap.min.js")

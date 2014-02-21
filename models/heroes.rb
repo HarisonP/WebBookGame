@@ -11,8 +11,11 @@ class Models
         db['heroes'].find_one({_id:hero_id, user_id:user_id})
       end
 
-      def update_hero(db:, user_id:, hero_id:, update_obj:)
-        db[collection].update({_id:hero_id,  user_id:user_id},update_obj)
+      def update_hero(db:, collection:, user_id:, hero_id:, update_obj:)
+        db[collection].update({_id:hero_id,  user_id:user_id}, {"$set" => {'properties' =>update_obj.properties, 
+                                                                          'offensive_improvements'=>update_obj.offensive_improvements,
+                                                                          'defencive_improvements' => update_obj.defencive_improvements}})
+        "success"
       end
       def save_hero(db:, hero:, collection:)
         hero_for_saving = {user_id:hero.properties['user_id'],name: hero.properties['name'], properties: hero.properties, 
@@ -22,7 +25,7 @@ class Models
       end
 
       def delete_hero(db:, hero_id:, collection:)
-        p db[collection].remove({_id: BSON::ObjectId.from_string(hero_id)});
+        db[collection].remove({_id: BSON::ObjectId.from_string(hero_id)});
       end
     end
   end

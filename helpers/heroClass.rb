@@ -1,9 +1,13 @@
 class Hero 
   attr_accessor :properties
-
-  def initialize(hero_exists, sex, rasse, classe, name, user_id)
+  attr_accessor :offensive_improvements
+  attr_accessor :defencive_improvements
+  def initialize(hero_exists, hero: , sex:, rasse:, classe:, name:, user_id:)
     @properties = {}
     if hero_exists
+      @defencive_improvements = hero['defencive_improvements']
+      @offensive_improvements = hero['offensive_improvements']
+      @properties = hero['properties']
     else
       @properties['strength'] = 0
       @properties['speed'] = 0
@@ -29,23 +33,31 @@ class Hero
       @properties['name'] = name  
       @properties['user_id'] = user_id
       @properties['current_health'] = @properties['max_health']
+
+      @defencive_improvements = {}
+      @defencive_improvements['points'] = {}
+
+      @offensive_improvements = {}
+      @offensive_improvements['points'] = {}
+
+      if rasse == 'human'
+        @properties['intelligence'] += 5
+        @properties['strength'] += 2
+        @properties['harizma'] += 2
+        @properties['max_health'] += 20
+      elsif rasse == 'elf'
+        @properties['dexterity'] += 5
+        @properties['intelligence'] += 2
+        @properties['harizma'] += 3
+        @properties['speed'] += 2
+      elsif rasse == 'orc'
+        @properties['strength'] += 9
+        @properties['max_health'] += 50
+        @properties['harizma'] -= 3
+      end
+
     end
 
-    if rasse == 'human'
-      @properties['intelligence'] += 5
-      @properties['strength'] += 2
-      @properties['harizma'] += 2
-      @properties['max_health'] += 20
-    elsif rasse == 'elf'
-      @properties['dexterity'] += 5
-      @properties['intelligence'] += 2
-      @properties['harizma'] += 3
-      @properties['speed'] += 2
-    elsif rasse == 'orc'
-      @properties['strength'] += 9
-      @properties['max_health'] += 50
-      @properties['harizma'] -= 3
-    end
   end
   def levelup
     @properties['max_health'] += 10
@@ -73,6 +85,11 @@ class Hero
   def save_hero db:, collection:"heroes"
     @properties['image'] = @properties["rasse"].capitalize + @properties["sex"].capitalize + @properties["class"].capitalize + ".jpg"
     Models::Heroes.save_hero db:db, hero:self, collection:collection
+  end
+
+  def update_hero db:, user_id: ,hero_id: , hero:, collection: "heroes"
+    p collection
+    Models::Heroes.update_hero(db: db, collection: collection,user_id:user_id, hero_id: hero_id, update_obj: hero)
   end
 
 end
