@@ -67,12 +67,21 @@ class MyGameBase < Sinatra::Base
     hero = HeroHelpers.generate_bson_to_hero(hero_bson:@hero);
     @hero_chosen = true
 
-    oponent = HeroHelpers.generate_random_hero hero_level: 7
-    # hero.properties['level']
+    oponent = HeroHelpers.generate_random_hero hero_level: hero.properties['level']
+
     @possible_oponent = oponent
     session['possible_oponent'] = @possible_oponent
     haml :town
   end
+
+
+  get "/levelup" do
+    @hero = Models::Heroes.find_hero(db:settings.db, user_id:session['user_id'], hero_id:BSON::ObjectId(session['hero_chosen']))
+    hero = HeroHelpers.generate_bson_to_hero(hero_bson:@hero);
+    hero.levelup()
+    hero.update_hero db:settings.db, user_id:session['user_id'], hero_id:BSON::ObjectId(session['hero_chosen']), hero:hero
+  end
+
 
   put '/update-hero' do
     bson_hero = Models::Heroes.find_hero(db:settings.db, user_id:session['user_id'], hero_id:BSON::ObjectId(session['hero_chosen']))
