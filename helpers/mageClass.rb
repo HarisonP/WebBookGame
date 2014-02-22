@@ -163,11 +163,11 @@ class Mage < Hero
 
     if blocked_positions.include?(position);
       damage -= block
-      @properties['current_health'] += (@defencive_improvements['block_restore_update'] * self.damage).floor
-      info['health_restored'] += (@defencive_improvements['block_restore_update'] * self.damage).floor
+      # @properties['current_health'] += (@defencive_improvements['block_restore_update'] * damage).floor
+      # info['health_restored'] += (@defencive_improvements['block_restore_update'] * damage).floor
 
-      @properties['current_mana'] += @defencive_improvements['block_restore_update'] * damage
-      info['mana_restored'] += (@defencive_improvements['block_restore_update'] * self.damage).floor
+      # @properties['current_mana'] += @defencive_improvements['block_restore_update'] * damage
+      # info['mana_restored'] += (@defencive_improvements['block_restore_update'] * damage).floor
 
       info['damage_returned'] = @defencive_improvements['block_damage_return'] * @properties['damage_reduce']
       info['blocked'] = true
@@ -189,33 +189,36 @@ class Mage < Hero
       info["damage_taken"] = damage
       @properties['current_health'] > 0
   end
-
+  def spell_names
+    ['Frost bolt', 'Arcane bolt', "Rest", "Piro Blast"]
+  end
+  
   def first_spell
-    if @properties['current_mana'] >= @properties['level'] * (20 - @offensive_improvements['frost_bolt_mana_reduce'])
+    # if @properties['current_mana'] >= @properties['level'] * (20 - @offensive_improvements['frost_bolt_mana_reduce'])
       @properties['current_mana'] -= @properties['level'] * (20 - @offensive_improvements['frost_bolt_mana_reduce'])
-      return frost_bolt
-    end
-    0
+      return frost_bolt.floor
+    # end
+    # 0
   end
 
   def second_spell
-    if @properties['current_mana'] >= @properties['level'] * 30
+    # if @properties['current_mana'] >= @properties['level'] * 30
       @properties['current_mana'] -= @properties['level'] * 30
-      return arcane_blast
-    end
-    0
+      return arcane_blast.floor
+    # end
+    # 0
   end
 
   def third_spell
-    rest
+    rest.floor
   end
 
   def ultimate 
-    if @properties['current_mana'] >= @properties['level'] * 40 and @properties['level'] > 2
+    # if @properties['current_mana'] >= @properties['level'] * 40 and @properties['level'] > 2
       @properties['current_mana'] -= @properties['level'] * 40 and @properties['level'] > 2
-      return piro_blast
-    end
-    0
+      return piro_blast.floor
+    # end
+    # 0
   end
 
   private
@@ -252,38 +255,38 @@ class Mage < Hero
   def frost_bolt
     
     @properties['damage_reduce'] += @properties['strength'] + @properties['dexterity']
-    randomer = Random.new
-    frost_bolt_dr_double_chance = @offensive_improvements['frost_bolt_damage_reduce']
-    while( frost_bolt_dr_double_chance > 0)
-      chance = randomer.rand(100) + 1
-      @properties['damage_reduce'] *= 2 if(chance <= frost_bolt_dr_double_chance)
-      frost_bolt_dr_double_chance -= 100
-    end
+    # randomer = Random.new
+    # frost_bolt_dr_double_chance = @offensive_improvements['frost_bolt_damage_reduce']
+    # while( frost_bolt_dr_double_chance > 0)
+    #   chance = randomer.rand(100) + 1
+    #   @properties['damage_reduce'] *= 2 if(chance <= frost_bolt_dr_double_chance)
+    #   frost_bolt_dr_double_chance -= 100
+    # end
     damage + @properties['intelligence']
   end
 
   def arcane_blast
-    3 * damage + 2 * @properties['dexterity']  + @offensive_improvements['arcane_blast_damage'] * @properties['intelligence']
     @properties['current_health'] += @offensive_improvements['arcane_blast_restore_improvment'] * properties['strength']
     @properties['current_mana'] += @offensive_improvements['arcane_blast_restore_improvment'] * properties['intelligence']
+    3 * damage + 2 * @properties['dexterity']  + @offensive_improvements['arcane_blast_damage'] * @properties['intelligence']
   end
 
   def rest
-   @properties['mana'] += 3 * @properties['intelligence'] + @properties['speed']
+   @properties['current_mana'] += 3 * @properties['intelligence'] + @properties['speed']
    @properties['damage_reduce'] += 2 * @properties['speed'] + @properties['strength']
    @offensive_improvements['rest_damage'] * damage
   end
   def piro_blast
-    damage = 5 * @properties['intelligence'] + 3 * damage + @properties['damage_reduce']
+    dmg = 5 * @properties['intelligence'] + 3 * damage + @properties['damage_reduce']
     randomer = Random.new
     frost_bolt_callback = @offensive_improvements['piro_blast_frost_callback']
-    while( frost_bolt_callback > 0)
-      chance = randomer.rand(100) + 1
-      damage += frost_bolt 2 if(chance <= frost_bolt_callback)
-      frost_bolt_callback -= 100
-    end
+    # while( frost_bolt_callback > 0)
+    #   chance = randomer.rand(100) + 1
+    #   dmg += frost_bolt 2 if(chance <= frost_bolt_callback)
+    #   frost_bolt_callback -= 100
+    # end
     @properties['damage_reduce'] = 0
-    damage
+    dmg
   end
 
 end

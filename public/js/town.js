@@ -1,5 +1,22 @@
 $(document).ready(function(){
-	editHeroEvents.index()	
+	editHeroEvents.index()
+	$('.fight').click(function(){
+		window.location.href = '/fight'
+	});	
+	$('.first_combat_step .next').click(function(e){
+		e.preventDefault();
+		$('.third_combat_step').hide();
+		$('.first_combat_step').hide();
+
+		$('.second_combat_step').show();
+	});
+	$('.second_combat_step .next').click(function(e){
+		e.preventDefault();
+		$('.first_combat_step').hide();
+		$('.second_combat_step').hide();
+
+		$('.third_combat_step').show();
+	});
 })
 
 

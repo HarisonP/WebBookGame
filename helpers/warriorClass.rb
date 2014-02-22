@@ -171,29 +171,32 @@ class Warrior < Hero
       @properties['current_health'] > 0
   end
 
+  def spell_names
+    ['Fast hit', 'Heavy Hit', "Defence Mode", "Execute"]
+  end
   
   def first_spell
-    fast_hit
+    fast_hit.floor
   end
 
   def second_spell
-    if @properties['current_rage'] >= @properties['level'] * 10
+    # if @properties['current_rage'] >= @properties['level'] * 10
       @properties['current_rage'] -= @properties['level'] * 10
-      return heavy_hit
-    end
-    0
+      return heavy_hit.floor
+    # end
+    # 0
   end
 
   def third_spell
-    defence_mode
+    defence_mode.floor
   end
 
   def ultimate 
-    if @properties['current_rage'] >= @properties['level'] * 20 and @properties['level'] > 2
+    # if @properties['current_rage'] >= @properties['level'] * 20 and @properties['level'] > 2
       @properties['current_rage'] = 0
       return execute
-    end
-    0
+    # end
+    # 0
   end
 
   private

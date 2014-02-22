@@ -1,3 +1,93 @@
-FUAAA
-
-/ # = hero
+.row.span12
+  .span4
+  .span4{style:"margin-top: -315px;margin-left:115px"}
+    -unless @incombat
+      %button{class:'span3 btn btn-lagre btn-success fight'} FIGHT
+-if @incombat 
+  -style = 'float:right;margin-top:-500px;border:solid 2px'
+-else
+  -style = 'float:right;margin-top:-663px;border:solid 2px'
+%aside.span4{style:style}
+  -if @incombat
+    .row.text-center
+      %h1
+        #{@oponent.properties['name']}
+      %img{class:'', src: "/images/heroes_images/#{@oponent.properties['image']}", width: '300px', style:'margin-left:20px;height:300px'}
+      .oponentView
+        .row.text-center
+          %h3
+            #{@oponent.properties['rasse'].capitalize} #{@oponent.properties['class'].capitalize}
+          %h4
+            Level #{@oponent.properties['level']}
+          .col-xs-3.centered
+            %strong{style:"color:#00FF00"}
+              Health: #{@oponent.properties['current_health']}/#{@oponent.properties['max_health']}
+            .col-xs-3.centered
+              -case @oponent.properties['class']
+                -when 'warrior'
+                  %strong{style:"color:#FF0000"}
+                    Rage: #{@oponent.properties['current_rage']}/#{@oponent.properties['max_rage']}
+                -when 'mage'
+                  %strong{style:"color:#0000FF"}
+                    Mana: #{@oponent.properties['current_mana']}/#{@oponent.properties['max_mana']}
+                -when 'hinter'
+                  %strong{style:"color:#0000FF"}
+                    Focus: #{@oponent.properties['current_focus']}/#{@oponent.properties['max_focus']}
+                -when 'rouge'
+                  %strong{style:"color:yellow"}
+                    current_energy: #{@oponent.properties['current_energy']}/#{@hero.properties['max_energy']}               
+    / .row.text-center
+    /   %h1
+    /     #{@oponent['name']}
+    /   %img{class:'', src: "/images/oponentes_images/#{@oponent['properties']['image']}", width: '300px', style:'float:left;height:300px'}
+    /   .oponentView
+    /     .row.text-center
+    /       %h3
+    /         #{@oponent['properties']['rasse'].capitalize} #{@oponent['properties']['class'].capitalize}
+    /       %h4
+    /         Level #{@oponent['properties']['level']}
+    /       .col-xs-3.centered
+    /         %strong{style:"color:#00FF00"}
+    /           Health: #{@oponent['properties']['current_health']}/#{@oponent['properties']['max_health']}
+    /         .col-xs-3.centered
+    /           -case @oponent['properties']['class']
+    /             -when 'warrior'
+    /               %strong{style:"color:#FF0000"}
+    /                 Rage: #{@oponent['properties']['current_rage']}/#{@oponent['properties']['max_rage']}
+    /             -when 'mage'
+    /               %strong{style:"color:#0000FF"}
+    /                 Mana: #{@oponent['properties']['current_mana']}/#{@oponent['properties']['max_mana']}
+    /             -when 'hinter'
+    /               %strong{style:"color:#0000FF"}
+    /                 Focus: #{@oponent['properties']['current_focus']}/#{@oponent['properties']['max_focus']}
+    /             -when 'rouge'
+    /               %strong{style:"color:yellow"}
+    /                 current_energy: #{@oponent['properties']['current_energy']}/#{@hero['properties']['max_energy']}
+  -else
+    .row.text-center
+      %h1
+        #{@possible_oponent.properties['name']}
+      %img{class:'', src: "/images/heroes_images/#{@possible_oponent.properties['image']}", width: '300px', style:'margin-left:20px;height:300px'}
+      .possible_oponentView
+        .row.text-center
+          %h3
+            #{@possible_oponent.properties['rasse'].capitalize} #{@possible_oponent.properties['class'].capitalize}
+          %h4
+            Level #{@possible_oponent.properties['level']}
+          .col-xs-3.centered
+            %strong{style:"color:#00FF00"}
+              Health: #{@possible_oponent.properties['current_health']}/#{@possible_oponent.properties['max_health']}
+            .col-xs-3.centered
+              -case @possible_oponent.properties['class']
+                -when 'warrior'
+                  %strong{style:"color:#FF0000"}
+                    Rage: #{@possible_oponent.properties['current_rage']}/#{@possible_oponent.properties['max_rage']}
+                -when 'mage'
+                  %strong{style:"color:#0000FF"}
+                    Mana: #{@possible_oponent.properties['current_mana']}/#{@possible_oponent.properties['max_mana']}
+                -when 'hinter'
+                  %strong{style:"color:#0000FF"}
+                    Focus: #{@possible_oponent.properties['current_focus']}/#{@possible_oponent.properties['max_focus']}
+                -when 'rouge'
+                  %strong{style:"color:yellow"}
+                    current_energy: #{@possible_oponent.properties['current_energy']}/#{@hero.properties['max_energy']}               

@@ -39,7 +39,8 @@ class Hero
 
       @offensive_improvements = {}
       @offensive_improvements['points'] = {}
-
+      @properties['image'] = @properties["rasse"].capitalize + @properties["sex"].capitalize + @properties["class"].capitalize + ".jpg"
+      
       if rasse == 'human'
         @properties['intelligence'] += 5
         @properties['strength'] += 2
@@ -83,7 +84,6 @@ class Hero
     end
   end
   def save_hero db:, collection:"heroes"
-    @properties['image'] = @properties["rasse"].capitalize + @properties["sex"].capitalize + @properties["class"].capitalize + ".jpg"
     Models::Heroes.save_hero db:db, hero:self, collection:collection
   end
 
